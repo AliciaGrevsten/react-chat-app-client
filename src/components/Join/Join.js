@@ -1,21 +1,45 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, useHistory } from 'react-router-dom';
+import { loginUser } from '../../api/user.api';
 import './Join.css';
 
-const Join = () => {
-    const [name, setName] = useState('');
-    const [room, setRoom] = useState('');
+
+const Join = ({ location }) => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [room, setRoom] = useState('chatroom');
+    const history = useHistory();
+    const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
+
+    const checkCredentials = async () => {
+        setIsLoading(true);
+        setLoginError('');
+        let result;
+
+        try {
+          result = await loginUser(username, password);
+        } catch (e) {
+          setLoginError(result.message);
+        } finally {
+            setIsLoading(false);
+
+            history.replace(`/chat?name=${username}&room=${room}`);
+        }
+    }
 
     return (
         <div className="joinOuterContainer">
             <div className="joinInnerContainer">
-                <h1 className="heading">Join</h1>
-                <div><input placeholder="Name" className="joinInput" type="text" onChange={(event) => setName(event.target.value)} /></div>
-                <div><input placeholder="Room" className="joinInput mt-20" type="text" onChange={(event) => setRoom(event.target.value)} /></div>
-                <Link onClick={(event) => (!name || !room) ? event.preventDefault() : null} to={`/chat?name=${name}&room=${room}`}>
-                    <button className="button mt-20" type="submit">Sign In</button>
-                </Link>
+                <h1 className="heading">Login</h1>
+                <div><input placeholder="Name" className="joinInput" type="text" onChange={(event) => setUsername(event.target.value)} /></div>
+                <div><input placeholder="Password" className="joinInput" type="password" onChange={(event) => setPassword(event.target.value)} /></div>
+                    <button className="button mt-20" type="button" onClick={checkCredentials}>Sign In</button>
+
+                    { isLoading && <p>Logging in..</p> }
+                    { loginError && <p>{ loginError }</p> }
+                    
+                    <Link to="/register">Don't have an account? Register now!</Link>
             </div>
         </div>
     );
