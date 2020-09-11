@@ -20,10 +20,10 @@ const Join = ({ location }) => {
       result = await registerUser(username, password);
     } catch (e) {
       setRegisterError(result.message);
-    } finally {
+    } finally {     
       setIsLoading(false);
-
-      history.replace(`/chat?name=${username}&room=${room}`);
+      if(result.data) history.replace(`/chat?name=${username}&room=${room}`);
+      else setRegisterError(result.message);
     }
   };
 

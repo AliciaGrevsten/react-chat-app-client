@@ -19,12 +19,13 @@ const Join = ({ location }) => {
 
         try {
           result = await loginUser(username, password);
+          console.log(result);
         } catch (e) {
           setLoginError(result.message);
         } finally {
             setIsLoading(false);
-
-            history.replace(`/chat?name=${username}&room=${room}`);
+            if(result.data) history.replace(`/chat?name=${username}&room=${room}`);
+            else setLoginError(result.message);
         }
     }
 
@@ -36,10 +37,12 @@ const Join = ({ location }) => {
                 <div><input placeholder="Password" className="joinInput" type="password" onChange={(event) => setPassword(event.target.value)} /></div>
                     <button className="button mt-20" type="button" onClick={checkCredentials}>Sign In</button>
 
-                    { isLoading && <p>Logging in..</p> }
-                    { loginError && <p>{ loginError }</p> }
-                    
-                    <Link to="/register">Don't have an account? Register now!</Link>
+                    <div className="helper">
+          {isLoading && <p>Logging in..</p>}
+          {loginError && <p>{loginError}</p>}
+
+          <Link to="/register">Don't have an account? Register now!</Link>
+        </div>
             </div>
         </div>
     );

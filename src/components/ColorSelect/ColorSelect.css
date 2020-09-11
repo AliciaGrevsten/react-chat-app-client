@@ -1,0 +1,10 @@
+.colorButton {
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #2979FF;
+    padding: 10px;
+    display: inline-block;
+    border: none;
+    width: 100%;
+  }

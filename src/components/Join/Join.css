@@ -69,3 +69,8 @@ html, body {
   button:focus {
     outline: 0;
   }
+
+  p {
+    color: white;
+    padding: 2%;
+  }

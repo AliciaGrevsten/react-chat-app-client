@@ -12,6 +12,7 @@ let socket;
 
 
 const Chat = ({ location }) => {
+    const [color, setColor] = useState("#2979FF");
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
     const [users, setUsers] = useState('');
@@ -58,14 +59,18 @@ const Chat = ({ location }) => {
         }
     }
 
-    console.log(message, messages);
+    //  When changing the color of the messages
+    const colorChange = (newColor) => {
+        setColor(newColor);
+        console.log("Chat:" + color);
+    }
 
     return (
         <div className="outerContainer">
             <div className="container">
                 <InfoBar room={room} />
-                <Messages messages={messages} name={name} />
-                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                <Messages messages={messages} name={name} color={color} />
+                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} colorChange={colorChange} />
             </div>
             <TextContainer users={users} />
         </div>
